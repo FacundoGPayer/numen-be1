@@ -6,7 +6,7 @@ mongoose.connect(url, {
 .catch((e)=> console.log('Error: ' + e)) 
 //Schema
 const productSchema = mongoose.Schema({
-    idCorto: {type: Number, required: true, unique: true},
+    id: {type: Number, required: true, unique: true},
     nombre: {type: String, required: true},
     marca: {type: String, required: true},
     descripcion: {type:String},
@@ -14,16 +14,23 @@ const productSchema = mongoose.Schema({
     stock: {type: Number, required: true},
 }, {versionKey: false})
 const ProductModel = mongoose.model('productos', productSchema)
+
+//Motrar todos
+const getAll = async ()=>{
+    const productos = await ProductModel.find()
+    console.log(productos)
+}
+
 //Mostrar
-const mostrar = async (id)=>{
-    const producto = await ProductModel.find({_id:id})
+const get = async (id)=>{
+    const producto = await ProductModel.findOne({id:id})
     console.log(producto)
 }
 
 //Crear
-const crear = async (id,nombre, marca, descripcion, precio, stock)=>{
+const post = async (id,nombre, marca, descripcion, precio, stock)=>{
     const producto = new ProductModel({
-        idCorto: id,
+        id: id,
         nombre: nombre,
         marca: marca,
         descripcion: descripcion,
@@ -33,10 +40,9 @@ const crear = async (id,nombre, marca, descripcion, precio, stock)=>{
     const resultado = await producto.save()
 }
 
-
 //Editar
-const actualizar = async (id, nombre, marca, descripcion, precio, stock)=>{
-    const producto = await ProductModel.updateOne({_id:id},
+const put = async (id, nombre, marca, descripcion, precio, stock)=>{
+    const producto = await ProductModel.updateOne({id:id},
     {
         $set:{
             nombre: nombre,
@@ -49,7 +55,7 @@ const actualizar = async (id, nombre, marca, descripcion, precio, stock)=>{
 }
 
 //Eliminar
-const eliminar = async (id)=>{
-    const producto = await ProductModel.deleteOne({_id:id})
+const del = async (id)=>{
+    const producto = await ProductModel.deleteOne({id:id})
 }
 
