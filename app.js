@@ -6,11 +6,12 @@ mongoose.connect(url, {
 .catch((e)=> console.log('Error: ' + e)) 
 //Schema
 const productSchema = mongoose.Schema({
-    nombre: {type: String, required:true,},
-    marca: {type: String, required:true,},
-    descripcion: {type:String, required:false,},
-    precio: {type: Number, required:true,},
-    stock: {type: Number, required:true,},
+    idCorto: {type: Number, required: true, unique: true},
+    nombre: {type: String, required: true},
+    marca: {type: String, required: true},
+    descripcion: {type:String},
+    precio: {type: Number, required: true},
+    stock: {type: Number, required: true},
 }, {versionKey: false})
 const ProductModel = mongoose.model('productos', productSchema)
 //Mostrar
@@ -19,10 +20,10 @@ const mostrar = async (id)=>{
     console.log(producto)
 }
 
-
 //Crear
-const crear = async (nombre, marca, descripcion, precio, stock)=>{
+const crear = async (id,nombre, marca, descripcion, precio, stock)=>{
     const producto = new ProductModel({
+        idCorto: id,
         nombre: nombre,
         marca: marca,
         descripcion: descripcion,
